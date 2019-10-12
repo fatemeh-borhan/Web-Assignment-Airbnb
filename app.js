@@ -17,7 +17,7 @@ app.get("/", (req,res)=>{
     res.render("home")
 });
 
-app.get("/Registration",(req,res)=>{
+app.get("/registration",(req,res)=>{
     res.render("Registration")
 });
 
