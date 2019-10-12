@@ -18,7 +18,7 @@ app.get("/", (req,res)=>{
 });
 
 app.get("/registration",(req,res)=>{
-    res.render("Registration")
+    res.render("registration")
 });
 
 app.get("/roomListing",(req,res)=>{
