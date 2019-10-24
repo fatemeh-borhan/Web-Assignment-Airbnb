@@ -21,10 +21,6 @@ app.get("/Registration",(req,res)=>{
     res.render("registration")
 });
 
-app.get("/log-in",(req,res)=>{
-   res.render("log-in")
-});
-
 app.get("/roomListing",(req,res)=>{
    //var rooms=[{title:"Lovely Room in Paris",
             //   price:"$193 CAD/night",
@@ -57,7 +53,7 @@ app.get("/roomListing",(req,res)=>{
   
     res.render("roomListing")   
     });
-
+    
 
 
 app.listen(PORT,()=>{
