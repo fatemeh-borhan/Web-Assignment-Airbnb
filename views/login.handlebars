@@ -1,0 +1,26 @@
+
+
+{{#each message}}
+
+    <div class="errors">{{this}}</div>
+{{/each}}
+
+
+<div class="log-in">
+        <div class="log-in-content">
+                <form  method="POST" action="/log-in">
+
+                        <div class="UserName">
+                        <label for="userName">UserName</label>
+                        <input type="Username" name="UserName" placeholder="Enter UserName"></div>
+                        <div class="Password"></div>
+                        <label for="password">PassWord</label>
+                        <input type="text" name="PassWord" placeholder="Enter Password">
+                        <br>
+               
+                       <input type="submit" value="log in" class="button" id="button">
+                        
+                        </form>
+        </div>
+</div>
+                        
