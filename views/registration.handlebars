@@ -1,5 +1,8 @@
   <div class="popup">
         <div class="popup-content">
+            {{#each message}}
+                <div class="errors">{{this}}</div>
+              {{/each}}
                 <form  method="POST" action="/registration">
                     
                        <div><h2>sign with <a href="https://www.facebook.com/airbnb">Facebook</a> or <a href="https://www.google.com/">Google</a><h2></div>
@@ -11,7 +14,8 @@
                         <div class="lastName">
                         <input type="text" name="LastName"  placeholder="Last name"><i class="fa fa-user icon"></i></div>
                         <div class="password"></div>
-                        <input type="text" name="password" placeholder="Create a Password"><i class="fa fa-user icon"></i>
+                        <input type="text" name="password" placeholder="Create a Password,that is 6 to 12 characters and must have letters and numbers only"><i class="fa fa-user icon"></i>
+       
                
                    <div class="birth">
                         <label><b>Birthday</b></label>
