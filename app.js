@@ -4,19 +4,19 @@ const bodyParser = require('body-parser');
 const mongoose= require('mongoose');
 
 const app=express();
-const PORT=process.env.PORT || 5000;
+const PORT=process.env.PORT || 3000;
 
 
-app.use(express.static('public'))
-
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //This tells Express that I want to use handlebars as my TEMPLATING ENGINE!!!!!!!!!!
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
-app.use(bodyParser.urlencoded({ extended: false }))
 
-const DBURL= "mongodb+srv://fbrhan:<password>@cluster0-symtc.mongodb.net/test?retryWrites=true&w=majority";
+
+const DBURL= "mongodb+srv://fbrhan:shahab60p@cluster0-symtc.mongodb.net/form?retryWrites=true&w=majority";
 mongoose.connect(DBURL, {useNewUrlParser: true})
 //The then block will only be executed if the above-mentioned line is successful
 .then(()=>{
@@ -81,79 +81,48 @@ app.get("/registration",(req,res)=>{
 
 
 app.post("/registration",(req,res)=>{
-    const Schema = mongoose.Schema;
-
-  const registerSchema = new Schema({
-    email:  String,
-    FirstName: String,
-    LaststName: String,
-    password:String
-  });
-
-    //This creates a Model called Tasks. This model represents our Collection in our database
-    const Forms = mongoose.model('Forms', registerSchema);
-// in esmaro daghigh check kon******
-    const formData ={
-        email:req.body.email,
-        FirstName:req.body.FirstName,
-        LaststName:req.body.LastName,
-        password:req.body.password
-    }
-    //To create a  Task document we have to call the Model constructor
-    const form = new Forms(formData);
-    ta.save()
-    .then(() => 
-    {
-        console.log('Form was inserted into database')
-    })
-    .catch((err)=>{
-        console.log(`Form was not inserted into the database because ${err}`)
-    })
-
-    res.redirect("/");
-
-
-
     const RegErrors=[];
+   const letters=/[^0-9a-zA-Z]/;
+    const letter=/[^a-zA-Z]/;
     //const MOnth=[];
 
-    if(req.body.email =="")
+    if(req.body.email == "")
     {
         RegErrors.push("please enter a email address")
     }
 
-
-    if(req.body.FirstName=="")
+    if(req.body.FirstName == "")
     {
         RegErrors.push("please enter  a First Name")
     }
 
-    if(req.body.FirstName.search(/[a-zA-Z]/<0)){
-        RegErrors.push("A first name should only contain letters") 
-     }
+    // if(req.body.FirstName.search(/[a-zA-Z]/ < 0)){
+    //     RegErrors.push("A first name should only contain letters") 
+    //  }
+     if((req.body.FirstName !== "")&&(letter.test(req.body.FirstName))){
+        RegErrors.push("A FirstName should contin only letters")
+    }
 
 
-    if(req.body.LastName=="")
+    if(req.body.LastName == "")
     {
         RegErrors.push("please enter a Last Name")
     }
-
-    if(req.body.LastName.search(/[a-zA-Z]/<0)){
-        RegErrors.push("A last name should only contain letters") 
+      if((req.body.LastName !== "")&&(req.body.LastName.match(letter))){
+         RegErrors.push("A LastName should contain only letters")
      }
 
-   
-    if(req.body.password=="")
+    if(req.body.password == "")
     {
         RegErrors.push("please enter a Password")
     }
 
-     if(req.body.password.search(/[a-zA-Z0-9]/<0)){
-        RegErrors.push("enter a password with letter and digit only") 
-     }
+      if((req.body.password != "")&&(req.body.password.match(letters))){
+         RegErrors.push("enter a password with letter and digit only") 
+      }
 
-    if((req.body.password !="") &&(req.body.password.length < 6 || req.body.password.length>12) ){
-        RegErrors.push("enter a password that is 6 to 12 characters and the password must have letters and numbers only") 
+    if((req.body.password != "") &&(req.body.password.length < 6 || req.body.password.length > 12) ){
+        RegErrors.push("enter a password that is 6 to 12 characters") 
      }
     
     if(RegErrors.length > 0 )
@@ -165,9 +134,36 @@ app.post("/registration",(req,res)=>{
 
     else
     {
-       // SEND THE EMAIL
-       const nodemailer = require('nodemailer');
-       const sgTransport = require('nodemailer-sendgrid-transport');
+    const Schema = mongoose.Schema;
+    const registerSchema = new Schema({
+        email:  String,
+        FirstName: String,
+        LaststName: String,
+        password:String
+             });      
+    //This creates a Model called Tasks. This model represents our Collection in our database
+    const Forms = mongoose.model('Forms', registerSchema);
+
+    const formData ={
+        email:req.body.email,
+        FirstName:req.body.FirstName,
+        LaststName:req.body.LastName,
+        password:req.body.password
+    }
+    //To create a  Task document we have to call the Model constructor
+    const form = new Forms(formData);
+    form.save()
+    .then(() => 
+    {
+    console.log('Form was inserted into database')
+    })
+    .catch((err)=>{
+        console.log(`Form was not inserted into the database because ${err}`)
+    }) 
+    
+      // SEND THE EMAIL    
+    const nodemailer = require('nodemailer');
+    const sgTransport = require('nodemailer-sendgrid-transport');
 
        const options = {
           auth: {
@@ -190,10 +186,15 @@ app.post("/registration",(req,res)=>{
           }
           console.log(res);
       });
+   
+   
       res.redirect("/dashboard");
     }
+   
 
 });
+
+    //res.redirect("/");  
 
 //This route is use to load the dashboard page
 app.get("/dashboard",(req,res)=>
