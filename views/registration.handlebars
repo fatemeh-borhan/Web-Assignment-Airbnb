@@ -1,4 +1,5 @@
   <div class="popup">
+    <div class="table-responsive">
         <div class="popup-content">
             {{#each message}}
                 <div class="errors">{{this}}</div>
@@ -25,7 +26,7 @@
                    </div>
                    <div class="datepicker">
                    <div class="monthpick" style="flex-basis:50%">
-                         <select name="Month">
+                         <select name="Month" class="required">
                            <option value="Month">Month</option>
                            <option value="Jan">January</option>
                           <option value="Feb">February</option>
@@ -42,7 +43,7 @@
                             </select>
                         </div>
                            <div class="daypick" style="flex-grow: 1">
-                           <select name="Day">
+                           <select name="Day" class="required">
                            <option value="Day">Day</option>
                            <option value="2001">01</option>
                            <option value="2000">02</option>
@@ -81,7 +82,7 @@
                     </select>
                          </div>
        <div class="yearpick" style="flex-grow: 1">
-                           <select name="Year">
+                           <select name="Year" class="required">
                            <option selected="" value="Year">Year</option>
                            <option value="2001">2001</option>
                            <option value="2000">2000</option>
@@ -106,7 +107,7 @@
                             <option value="1992">1981</option>
                            <option value="1991">1980</option>
 
-     </select>
+              </select>
      </div>
 </div>
                <br>
@@ -116,5 +117,5 @@
                 
                 </form>
         </div>
-
+</div>
     </div>

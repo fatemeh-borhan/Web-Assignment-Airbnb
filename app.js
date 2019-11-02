@@ -4,25 +4,23 @@ const bodyParser = require('body-parser');
 const mongoose= require('mongoose');
 
 const app=express();
-const PORT=process.env.PORT || 3000;
+const PORT=process.env.PORT || 8080;
 
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//This tells Express that I want to use handlebars as my TEMPLATING ENGINE!!!!!!!!!!
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
+const DBURL= "mongodb+srv://fbrhan:Salsa!193@fatemeh-symtc.mongodb.net/form?retryWrites=true&w=majority";
+mongoose.connect(DBURL, {useNewUrlParser: true,
+    useUnifiedTopology: true })
 
-
-const DBURL= "mongodb+srv://fbrhan:shahab60p@cluster0-symtc.mongodb.net/form?retryWrites=true&w=majority";
-mongoose.connect(DBURL, {useNewUrlParser: true})
-//The then block will only be executed if the above-mentioned line is successful
 .then(()=>{
     console.log(`Database is connected`)
 })
-//The catch block will only be executed if the connection failed
+
 .catch(err=>{
     console.log(`Something went wrong : ${err}`);
 })
@@ -40,35 +38,30 @@ app.get("/login",(req,res)=>{
 });
 
 app.post("/login",(req,res)=>{
-
-
-    const errors=[];
+  const errors=[];
 
     if(req.body.UserName =="")
     {
         errors.push("please enter  a User Name")
     }
 
-
     if(req.body.PassWord=="")
     {
         errors.push("please enter  a Password")
     }
 
-
     if(errors.length > 0 )
     {
-
         res.render("login",{
             message:errors
         })
     }
-    
     else
     {
       res.redirect("/dashboard");
-  }
+    }
 });
+
 //This route is use to load the dashboard page
 app.get("/dashboard",(req,res)=>
 {
@@ -82,9 +75,8 @@ app.get("/registration",(req,res)=>{
 
 app.post("/registration",(req,res)=>{
     const RegErrors=[];
-   const letters=/[^0-9a-zA-Z]/;
+    const letters=/[^0-9a-zA-Z]/;
     const letter=/[^a-zA-Z]/;
-    //const MOnth=[];
 
     if(req.body.email == "")
     {
@@ -99,7 +91,7 @@ app.post("/registration",(req,res)=>{
     // if(req.body.FirstName.search(/[a-zA-Z]/ < 0)){
     //     RegErrors.push("A first name should only contain letters") 
     //  }
-     if((req.body.FirstName !== "")&&(letter.test(req.body.FirstName))){
+    if((req.body.FirstName !== "")&&(letter.test(req.body.FirstName))){
         RegErrors.push("A FirstName should contin only letters")
     }
 
@@ -108,22 +100,34 @@ app.post("/registration",(req,res)=>{
     {
         RegErrors.push("please enter a Last Name")
     }
-      if((req.body.LastName !== "")&&(req.body.LastName.match(letter))){
+
+    if((req.body.LastName !== "")&&(req.body.LastName.match(letter))){
          RegErrors.push("A LastName should contain only letters")
-     }
+    }
 
     if(req.body.password == "")
     {
         RegErrors.push("please enter a Password")
     }
 
-      if((req.body.password != "")&&(req.body.password.match(letters))){
+    if((req.body.password != "")&&(req.body.password.match(letters))){
          RegErrors.push("enter a password with letter and digit only") 
-      }
+    }
 
     if((req.body.password != "") &&(req.body.password.length < 6 || req.body.password.length > 12) ){
         RegErrors.push("enter a password that is 6 to 12 characters") 
-     }
+    }
+    if(req.body.Month =="Month" ){
+        RegErrors.push("please enter a valid Date(Month)")
+    }
+
+    if(req.body.Year =="Year" ){
+        RegErrors.push("please enter a valid Date(Year)")
+    }
+
+    if(req.body.Day =="Day" ){
+        RegErrors.push("please enter a valid Date(Day)")
+    }
     
     if(RegErrors.length > 0 )
     {
@@ -140,7 +144,8 @@ app.post("/registration",(req,res)=>{
         FirstName: String,
         LaststName: String,
         password:String
-             });      
+             }); 
+
     //This creates a Model called Tasks. This model represents our Collection in our database
     const Forms = mongoose.model('Forms', registerSchema);
 
@@ -161,40 +166,34 @@ app.post("/registration",(req,res)=>{
         console.log(`Form was not inserted into the database because ${err}`)
     }) 
     
-      // SEND THE EMAIL    
-    const nodemailer = require('nodemailer');
-    const sgTransport = require('nodemailer-sendgrid-transport');
+    //   // SEND THE EMAIL    
+    // const nodemailer = require('nodemailer');
+    // const sgTransport = require('nodemailer-sendgrid-transport');
 
-       const options = {
-          auth: {
-              api_key: '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'
-          }
-      }
-      const mailer = nodemailer.createTransport(sgTransport(options));
+    //    const options = {
+    //       auth: {
+    //           api_key: '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'
+    //       }
+    //   }
+    //   const mailer = nodemailer.createTransport(sgTransport(options));
 
-      const email = {
-          to: `${req.body.email}`,
-          from: 'borhan.manager@gmail.com',
-          subject: 'Testing',
-          text: "You Have Been Successfuly Registered",
-          html: "You Have Been Successfuly Registered"
-      };
+    //   const email = {
+    //       to: `${req.body.email}`,
+    //       from: 'borhan.manager@gmail.com',
+    //       subject: 'Testing',
+    //       text: "You Have Been Successfuly Registered",
+    //       html: "You Have Been Successfuly Registered"
+    //   };
        
-      mailer.sendMail(email, (err, res)=> {
-          if (err) { 
-              console.log(err) 
-          }
-          console.log(res);
-      });
-   
-   
+    //   mailer.sendMail(email, (err, res)=> {
+    //       if (err) { 
+    //           console.log(err) 
+    //       }
+    //       console.log(res);
+    //   });
       res.redirect("/dashboard");
     }
-   
-
-});
-
-    //res.redirect("/");  
+}); 
 
 //This route is use to load the dashboard page
 app.get("/dashboard",(req,res)=>
