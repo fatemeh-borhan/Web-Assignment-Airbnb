@@ -2,6 +2,7 @@ const express= require("express");
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose= require('mongoose');
+const popup=require('popups');
 
 const app=express();
 const PORT=process.env.PORT || 8080;
@@ -131,9 +132,10 @@ app.post("/registration",(req,res)=>{
     
     if(RegErrors.length > 0 )
     {
-        res.render("registration",{
-            message:RegErrors
-        })
+        // res.render("registration",{
+        //     message:RegErrors
+        // })
+        popup.alert({message:RegErrors});
     }
 
     else
