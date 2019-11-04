@@ -65,7 +65,7 @@ app.post("/login",(req,res)=>{
 //This route is use to load the dashboard page
 app.get("/dashboard",(req,res)=>
 {
-  res.render("userDashboard");
+  res.render("userDashBoard");
 });
 
 app.get("/registration",(req,res)=>{
