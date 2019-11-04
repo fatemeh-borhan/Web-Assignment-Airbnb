@@ -307,3 +307,6 @@ h5{
     font-size: 0.8em;
     font-weight: 400;
 }
+@media only screen and (max-width: 600px) {
+    
+}
