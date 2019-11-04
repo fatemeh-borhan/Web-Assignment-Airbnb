@@ -172,31 +172,31 @@ app.post("/registration",(req,res)=>{
         console.log(`Form was not inserted into the database because ${err}`)
     }) 
     
-    //   // SEND THE EMAIL    
-    // const nodemailer = require('nodemailer');
-    // const sgTransport = require('nodemailer-sendgrid-transport');
+      // SEND THE EMAIL    
+    const nodemailer = require('nodemailer');
+    const sgTransport = require('nodemailer-sendgrid-transport');
 
-    //    const options = {
-    //       auth: {
-    //           api_key: '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'
-    //       }
-    //   }
-    //   const mailer = nodemailer.createTransport(sgTransport(options));
+       const options = {
+          auth: {
+              api_key: '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'
+          }
+      }
+      const mailer = nodemailer.createTransport(sgTransport(options));
 
-    //   const email = {
-    //       to: `${req.body.email}`,
-    //       from: 'borhan.manager@gmail.com',
-    //       subject: 'Testing',
-    //       text: "You Have Been Successfuly Registered",
-    //       html: "You Have Been Successfuly Registered"
-    //   };
+      const email = {
+          to: `${req.body.email}`,
+          from: 'borhan.manager@gmail.com',
+          subject: 'Testing',
+          text: "You Have Been Successfuly Registered",
+          html: "You Have Been Successfuly Registered"
+      };
        
-    //   mailer.sendMail(email, (err, res)=> {
-    //       if (err) { 
-    //           console.log(err) 
-    //       }
-    //       console.log(res);
-    //   });
+      mailer.sendMail(email, (err, res)=> {
+          if (err) { 
+              console.log(err) 
+          }
+          console.log(res);
+      });
       res.redirect("/dashboard");
     }
 }); 
