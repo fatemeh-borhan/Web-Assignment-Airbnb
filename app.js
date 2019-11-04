@@ -2,10 +2,9 @@ const express= require("express");
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose= require('mongoose');
-const popup=require('popups');
-
+//const popup=require('popups');
 const app=express();
-const PORT=process.env.PORT || 8080;
+const PORT=process.env.PORT || 4000;
 
 
 app.use(express.static('public'));
@@ -132,10 +131,9 @@ app.post("/registration",(req,res)=>{
     
     if(RegErrors.length > 0 )
     {
-        // res.render("registration",{
-        //     message:RegErrors
-        // })
-        popup.alert({message:RegErrors});
+        res.render("registration",{
+            message:RegErrors
+        })
     }
 
     else
@@ -145,7 +143,10 @@ app.post("/registration",(req,res)=>{
         email:  String,
         FirstName: String,
         LaststName: String,
-        password:String
+        password:String,
+        Month:String,
+        Day:Number,
+        Year:Number  
              }); 
 
     //This creates a Model called Tasks. This model represents our Collection in our database
@@ -155,7 +156,10 @@ app.post("/registration",(req,res)=>{
         email:req.body.email,
         FirstName:req.body.FirstName,
         LaststName:req.body.LastName,
-        password:req.body.password
+        password:req.body.password,
+        Month:req.body.Month,
+        Day:req.body.Day,
+        Year:req.body.Year
     }
     //To create a  Task document we have to call the Model constructor
     const form = new Forms(formData);

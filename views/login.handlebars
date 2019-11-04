@@ -1,13 +1,17 @@
 
-
+<div class="wrap">
+<div class="popup">
 <div class="log-in">
+        
         <div class="log-in-content">
+                <div><h2>Log In<h2>
+                     </div>
         {{#each message}}
         <div class="errors">{{this}}</div>
          {{/each}}
-
+ 
                 <form  method="POST" action="/login">
-
+ <br><br> <br>
                         <div class="UserName">
                         <label>UserName</label>
                         <input type="Username" name="UserName" placeholder="Enter UserName"></div>
@@ -16,10 +20,14 @@
                         <input type="text" name="PassWord" placeholder="Enter Password">
                         <br>
                        <input type="submit" value="Login" class="button" id="button">
-                       <input type="checkbox" value="Remember me">Remember me<br>
+                        <label class="remember">
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                        </label>
+                       
                        <h4>Don’t have an account?
                         <a href="/registration">Sign up</a></h4>
                         </form>
         </div>
 </div>
-                        
+</div>
+</div>                        
