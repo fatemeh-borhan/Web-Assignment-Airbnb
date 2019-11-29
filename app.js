@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose= require('mongoose');
 const methodOverride = require('method-override');
 const fileupload = require("express-fileupload");
-//const session = require("express-session");
+const session = require("express-session");
 
 
 require("dotenv").config({path:'./config/keys.env'});
@@ -27,7 +27,7 @@ app.use(methodOverride('_method'));
 app.use(express.static("public"));
 
 
-//app.use(session({secret:"This is my secret key. This should not be shown to everyone"}))
+app.use(session({secret:"This is my secret key. This should not be shown to everyone"}))
 
 //MAPs EXPRESS TO ALL OUR  ROUTER OBJECTS
 app.use('/room',roomRoutes);
@@ -35,9 +35,9 @@ app.use("/",generalRoutes);
 app.use("/user",userRoutes);
 
 
-// app.use("/",(req,res)=>{
-//     res.render("General/404");
-// });
+app.use("/",(req,res)=>{
+    res.render("General/404");
+});
 
 //inja route haye ke mikhay import koni ro miari az route app.use("/",productRoutes);
 app.engine('handlebars', exphbs());

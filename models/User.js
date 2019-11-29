@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-    const registerSchema = new Schema({
+    const registerchema = new Schema({
         email: 
         {
             type: String,
@@ -49,7 +49,7 @@ const bcrypt = require('bcryptjs');
     }); 
 
     //The "pre" mongoose function is going to call the below function right before the document is saved to the DB
-    registSchema.pre("save",function(next){
+    registerchema.pre("save",function(next){
   
         bcrypt.genSalt(10)
 
@@ -57,11 +57,9 @@ const bcrypt = require('bcryptjs');
         .then(salt=>{
             bcrypt.hash(this.password,salt)
             .then(hash=>{
-                console.log(`Current :${this.password}`);
-                console.log(`Hash :${hash}`);
+                // console.log(`Current :${this.password}`);
+                // console.log(`Hash :${hash}`);
                 this.password=hash
-               
-               // console.log(`Hash Password : ${form.password}`)
                 // The below code is a call back function that does the following :
                  //It forces the code of execution to  move onto the next code in the execution queue 
                 next();
@@ -71,6 +69,6 @@ const bcrypt = require('bcryptjs');
 })
 
     //This creates a Model called Forms. This model represents our Collection in our database
-    const Forms = mongoose.model('Forms', registSchema);
+    const Forms = mongoose.model('Forms', registerchema);
     module.exports=Forms;
  

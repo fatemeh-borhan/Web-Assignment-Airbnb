@@ -192,17 +192,16 @@ router.post("/login",(req,res)=>{
             // if email exist 
             else
             {
-                console.log(`Login data :${loginData.password}`);
-                console.log(`Hash Password : ${form.password}`)
+                // console.log(`Login data :${loginData.password}`);
+                // console.log(`Hash Password : ${form.password}`)
                 bcrypt.compare(loginData.password,form.password)
                 .then(isMatched=>{
-    console.log("bigbang")
                     if(isMatched==true)
                     {
                         //It means that the user is authenticated 
     
                         //Create session 
-                        req.session.whatEver=form;
+                       // req.session.userInfo=form;
                         res.redirect("/user/dashboard");
                     }
 
@@ -220,6 +219,14 @@ router.post("/login",(req,res)=>{
     })
     .catch(err=> console.log(`Something occured ${err}`));
 }
+});
+
+router.get("/logout",(req,res)=>{
+
+    //This destorys the session
+    req.session.destroy();
+    res.redirect("/User/login");
+
 });
 router.get("/dashboard",(req,res)=>
 {
