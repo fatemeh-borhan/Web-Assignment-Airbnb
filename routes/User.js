@@ -1,45 +1,14 @@
 const express = require('express')
 const router = express.Router();
+const bcrypt= require("bcryptjs");
 
 const Forms= require("../models/User");
 
 
 
-router.get("/login",(req,res)=>{
-
-    res.render("User/login");
-});
-
-router.post("/login",(req,res)=>{
-  const errors=[];
-
-    if(req.body.UserName =="")
-    {
-        errors.push("please enter  a User Name")
-    }
-
-    if(req.body.PassWord=="")
-    {
-        errors.push("please enter  a Password")
-    }
-
-    if(errors.length > 0 )
-    {
-        res.render("login",{
-            message:errors
-        })
-    }
-    else
-    {
-      res.redirect("/dashboard");
-    }
-});
 
 //This route is use to load the dashboard page
-router.get("/dashboard",(req,res)=>
-{
-  res.render("User/userDashBoard");
-});
+
 
 router.get("/registration",(req,res)=>{
     res.render("User/registration")
@@ -82,6 +51,10 @@ router.post("/registration",(req,res)=>{
     {
         RegErrors.push("please enter a Password")
     }
+    if(req.body.confirmpassword !== req.body.password)
+    {
+        RegErrors.push("Password dose not match!!!")
+    }
 
     if((req.body.password != "")&&(req.body.password.match(letters))){
          RegErrors.push("enter a password with letter and digit only") 
@@ -111,20 +84,6 @@ router.post("/registration",(req,res)=>{
 
     else
     {
-    // const Schema = mongoose.Schema;
-    // const registerSchema = new Schema({
-    //     email:  String,
-    //     FirstName: String,
-    //     LaststName: String,
-    //     password:String,
-    //     Month:String,
-    //     Day:Number,
-    //     Year:Number  
-    //          }); 
-
-    // //This creates a Model called Tasks. This model represents our Collection in our database
-    // const Forms = mongoose.model('Forms', registerSchema);
-
     const formData ={
         email:req.body.email,
         FirstName:req.body.FirstName,
@@ -170,7 +129,7 @@ router.post("/registration",(req,res)=>{
           }
           console.log(res);
       });
-      res.redirect("/dashboard");
+      res.redirect("/user/dashboard");
     }
 }); 
 
@@ -178,5 +137,92 @@ router.post("/registration",(req,res)=>{
 router.get("/dashboard",(req,res)=>
 {
   res.render("User/userDashboard");
+});
+//log in
+
+router.get("/login",(req,res)=>{
+
+    res.render("User/login");
+});
+
+router.post("/login",(req,res)=>{
+  const errors=[];
+  
+    if(req.body.email =="")
+    {
+        errors.push("please enter  a User Name")
+    }
+
+    if(req.body.password=="")
+    {
+        errors.push("please enter  a Password")
+    }
+    // const loginData = {
+    //     email : req.body.email,
+    //     password : req.body.password
+    // }
+    
+    
+    if(errors.length > 0 )
+    {
+        res.render("User/login",{
+            message:errors
+        })
+    }
+    else
+    {
+        const loginData = {
+            email : req.body.email,
+            password : req.body.password
+        }
+    
+        // console.log(loginData.email)
+        // console.log(loginData.password);
+        Forms.findOne({email:loginData.email})
+        .then(form=>{
+    
+            //This means that there was no matching email in the database
+            if(form==null)
+            {
+                errors.push("Sorry your email was not found");
+                res.render("User/login",{
+                    message: errors
+                })
+            }
+            // if email exist 
+            else
+            {
+                console.log(`Login data :${loginData.password}`);
+                console.log(`Hash Password : ${form.password}`)
+                bcrypt.compare(loginData.password,form.password)
+                .then(isMatched=>{
+    console.log("bigbang")
+                    if(isMatched==true)
+                    {
+                        //It means that the user is authenticated 
+    
+                        //Create session 
+                        req.session.whatEver=form;
+                        res.redirect("/user/dashboard");
+                    }
+
+                    else
+                    {
+                        errors.push("Sorry, your password does not match");
+                        res.render("User/login",{
+                            message:errors
+                        })
+                    }
+                })
+                .catch(err=>console.log(`Error :${err}`));
+            }
+            //****** */
+    })
+    .catch(err=> console.log(`Something occured ${err}`));
+}
+});
+router.get("/dashboard",(req,res)=>
+{
+  res.render("User/userDashBoard");
 });
 module.exports=router;
