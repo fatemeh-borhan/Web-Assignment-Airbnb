@@ -15,7 +15,7 @@ const userRoutes = require("./routes/User");
 const roomRoutes = require("./routes/Room");
 
 
-//creation of app object
+
 const app= express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,9 +27,19 @@ app.use(methodOverride('_method'));
 app.use(express.static("public"));
 
 
-app.use(session({secret:"This is my secret key. This should not be shown to everyone"}))
+app.use(session({secret:"This is my secret key. This should not be shown to everyone"}));
+//inja route haye ke mikhay import koni ro miari az route app.use("/",productRoutes);
 
+app.use((req,res,next)=>{
+        res.locals.user= req.session.userInfo;
+        res.locals.admin= req.session.admin;
+        next();
+    });
+
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
 //MAPs EXPRESS TO ALL OUR  ROUTER OBJECTS
+
 app.use('/room',roomRoutes);
 app.use("/",generalRoutes);
 app.use("/user",userRoutes);
@@ -39,9 +49,7 @@ app.use("/",(req,res)=>{
     res.render("General/404");
 });
 
-//inja route haye ke mikhay import koni ro miari az route app.use("/",productRoutes);
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+
 
 const DBURL= "mongodb+srv://fbrhan:Salsa!193@fatemeh-symtc.mongodb.net/form?retryWrites=true&w=majority";
 mongoose.connect(DBURL, {useNewUrlParser: true,

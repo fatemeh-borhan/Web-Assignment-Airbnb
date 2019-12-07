@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Airbnb</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="script" href="js/Script.js">
 </head>
 <body>
   <!-- Your main layout page must container the markup that will be common throughout the web application in multiple web pages -->
@@ -15,12 +14,27 @@
        <img src="/image/logo.png" alt="logo" href="/" />
      </div>
    <nav>
-      <a href="/User/dashboard">DashBoard</a>
-       <a href="/User/logout" class="logout"> log out </a>
-       <a href="/User/login" class="login"> login </a>
-       <a href="/User/registration" class="register"> Sign up </a>
-       <a href="/Room/roomListing"> Room Listing </a>
+     
+    
+ {{#if user}}
+       <a href="/user/logout" class="logout"> log out </a>
+
+       {{#if admin}}
+       <a href="/room/list" class="view"> view Rooms </a>
+       <a href="/room/add" class="add"> Add Room </a>
+       <a href="/user/adminDashboard">Admin DashBoard</a>
+       {{else}}
+        <a href="/user/dashboard">DashBoard</a>
+        <a href="/room/roomListing">List Of Rooms</a>
+        {{/if}}
+ {{else}}
+          <a href="/User/registration" class="register"> Sign up </a>
+          <a href="/User/login" class="login"> Login </a>
+           <a href="/room/roomListing">List Of Rooms</a>
+          
+ {{/if}}
        <a href="/"> Home </a>
+        
    </nav>
 
    </header>

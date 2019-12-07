@@ -1,0 +1,36 @@
+<div class="bkg">
+<div class="popup">
+<div class="log-in">
+        
+        <div class="log-in-content">
+            {{#each errors}}
+    <div class="error">{{this}}</div>
+{{/each}}
+<div>
+    <h2>Edit Room</h2>
+    
+    <form method="POST" action="/room/edit/{{roomDocument._id}}/?_method=PUT" enctype="multipart/form-data">
+
+        <label>Title</label>
+        <input type="text" name="title" id="title" value="{{roomDocument.title}}">
+
+        <label>Price</label>
+        <input type="number" name="price" id="price" value="{{roomDocument.price}}">
+
+        <label>Description</label>
+        <input type="text" name="description" id="description" value="{{roomDocument.description}}">
+        
+        <label>Location</label>
+        <input type="text" name="location" id="location" value="{{roomDocument.location}}">
+
+        <input type="file" name="roomImage">
+        <!--value="<img class="img" src="/uploads/{{roomDocument.roomImage}}">-->
+
+        <input type="submit" value="edit Room">
+
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>

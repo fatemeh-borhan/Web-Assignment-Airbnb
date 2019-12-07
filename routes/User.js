@@ -3,9 +3,9 @@ const router = express.Router();
 const bcrypt= require("bcryptjs");
 
 const Forms= require("../models/User");
-
-
-
+//const Booking= require("../models/Booking");
+const hasAccess= require("../middleWare/auth");
+const isAdmin= require("../middleWare/userCheck");
 
 //This route is use to load the dashboard page
 
@@ -30,14 +30,15 @@ router.post("/registration",(req,res)=>{
         RegErrors.push("please enter  a First Name")
     }
 
-    // if(req.body.FirstName.search(/[a-zA-Z]/ < 0)){
-    //     RegErrors.push("A first name should only contain letters") 
-    //  }
     if((req.body.FirstName !== "")&&(letter.test(req.body.FirstName))){
         RegErrors.push("A FirstName should contin only letters")
     }
-
-
+//**** */
+    if(req.body.FirstName ==Forms.FirstName)
+    {
+        RegErrors.push("UserName already exist")
+    }
+    //**** */
     if(req.body.LastName == "")
     {
         RegErrors.push("please enter a Last Name")
@@ -87,7 +88,7 @@ router.post("/registration",(req,res)=>{
     const formData ={
         email:req.body.email,
         FirstName:req.body.FirstName,
-        LaststName:req.body.LastName,
+        LastName:req.body.LastName,
         password:req.body.password,
         Month:req.body.Month,
         Day:req.body.Day,
@@ -129,15 +130,15 @@ router.post("/registration",(req,res)=>{
           }
           console.log(res);
       });
-      res.redirect("/user/dashboard");
+      res.redirect("/user/login");
     }
 }); 
 
 //This route is use to load the dashboard page
-router.get("/dashboard",(req,res)=>
-{
-  res.render("User/userDashboard");
-});
+// router.get("/dashboard",(req,res)=>
+// {
+//   res.render("User/userDashboard");
+// });
 //log in
 
 router.get("/login",(req,res)=>{
@@ -157,11 +158,6 @@ router.post("/login",(req,res)=>{
     {
         errors.push("please enter  a Password")
     }
-    // const loginData = {
-    //     email : req.body.email,
-    //     password : req.body.password
-    // }
-    
     
     if(errors.length > 0 )
     {
@@ -198,11 +194,18 @@ router.post("/login",(req,res)=>{
                 .then(isMatched=>{
                     if(isMatched==true)
                     {
-                        //It means that the user is authenticated 
-    
-                        //Create session 
-                       // req.session.userInfo=form;
-                        res.redirect("/user/dashboard");
+                     //Create session
+                        req.session.userInfo=form;
+                            if(req.session.userInfo.type =="Admin")
+                            { 
+                                req.session.admin = "yes"
+                                   res.redirect("/User/adminDashboard");
+                            }
+
+                            else
+                            {
+                                 res.redirect("/User/dashboard")
+                            } 
                     }
 
                     else
@@ -225,11 +228,16 @@ router.get("/logout",(req,res)=>{
 
     //This destorys the session
     req.session.destroy();
-    res.redirect("/User/login");
+    res.redirect("/");
 
 });
-router.get("/dashboard",(req,res)=>
+router.get("/dashboard",hasAccess,(req,res)=>
 {
   res.render("User/userDashBoard");
+});
+
+router.get("/adminDashboard",hasAccess,isAdmin,(req,res)=>
+{
+  res.render("User/adminDashboard");
 });
 module.exports=router;

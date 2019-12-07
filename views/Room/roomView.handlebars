@@ -1,0 +1,27 @@
+<div class="rooms_wrap">
+
+     <div class="soot">
+              <h2>Room Dashboard</h2>
+         <div class="container">
+ 
+     {{#each roomLists}} 
+     <div class="room">
+        <img class="img" src="/uploads/{{this.roomImage}}"> 
+        &nbsp;&nbsp;<a href="/room/profile/{{this._id}}">{{this.title}}</a> &nbsp;&nbsp;
+        <p>{{this.description}}</p>
+        <p>{{this.location}}</p>
+        <p>{{this.price}}</p>
+        <a href="/room/edit/{{this._id}}">Edit</a>&nbsp;&nbsp;
+        
+    </div>
+    {{else}}
+        No rooms in database 
+        {{/each}}
+
+
+<div class="room" id="room-links-holder">
+    <a href="/room/add">Add a Room</a>
+</div>
+</div>
+</div>
+</div>

@@ -1,40 +1,45 @@
  const mongoose = require('mongoose');
  const Schema = mongoose.Schema;
 
-// const roomSchema = new Schema({
-//    title:
-    // {
- //   type:String,
-//    required:true
-//     },
+const roomSchema = new Schema({
+   title:
+    {
+       type:String,
+       required:true
+    },
 
-//     price:
-//     {
-//         type:Number,
-//         required:true
-//     },
+    price:
+    {
+        type:Number,
+        required:true
+    },
 
-//     description:
-//     {
-//         type:String,
-//         required:true
-//     },
+    description:
+    {
+        type:String,
+        required:true
+    },
 
-//     location:
-//     {
-//         type:String,
-//         required:true
-//     },
+    location:
+    {
+        type:String,
+        required:true
+    },
 
-//     image:
-     //  {
-    //         type:String,
-    //         required:true
-    //    },
-//
+    roomImage:
+      {
+            type:String
+            
+       },
+    dateCreated :
+    {
+         type:Date,
+         default: Date.now()
+    }
 
 
-// });
-// const roomkModel =mongoose.model("ROOM",roomSchema);
 
-// module.exports=roomModel;
+});
+const roomModel =mongoose.model("Room",roomSchema);
+
+module.exports=roomModel;

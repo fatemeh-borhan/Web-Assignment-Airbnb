@@ -1,0 +1,16 @@
+
+ 
+ <form method="POST" action="/room/profile/{{this._id}}/?_method=PUT" enctype="multipart/form-data">
+ {{#each roomSearch}} 
+   <img class="img" src="/uploads/{{this.roomImage}}">
+       
+        <h4>{{this.title}}</h4>
+        <h4>{{this.price}}$</h4>
+        <h4>{{this.description}}</h4>  
+        <h4>{{this.location}}</h4>   
+        <input type="submit" value="book Now">
+ {{else}}
+ No rooms in database 
+ {{/each}}
+    </form>
+                

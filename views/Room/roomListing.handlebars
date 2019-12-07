@@ -1,14 +1,47 @@
-<div class="rooms_wrap">
+<!--<div class="rooms_wrap">
 <div class="soot">
     <h2>List of all rooms</h2>
     <div class="container">
-        
+         {{#each roomLists}} 
         <div class="room">
-            <img class="img" src="/image/room1.jpeg" alt="room1" >
-            <h3>Lovely Room in Paris</h3>
-            <p>$193 CAD/night</p>
+            <img class="img" src= "/uploads/{{this.roomImage}}" alt="room1" >
+            <h3>{{this.title}}</h3>
+            <h3>{{this.description}}</h3>
+            <p>{{this.location}}</p>
+            <p>{{this.price}}</p>
         </div>
-        <div class="room">
+         {{else}}
+           No rooms in database 
+     {{/each}}
+     </div>
+     </div>
+</div>-->
+     
+     <div class="rooms_wrap">
+     <div class="soot">
+         <div class="container">
+      {{#each roomLists}} 
+      <div class="room">
+        <img class="img" src="/uploads/{{this.roomImage}}">
+        <h3>{{this.title}}</h3>
+        <p>{{this.description}}</p>
+        <p>{{this.location}}</p>
+        <p>{{this.price}}</p>
+        
+        </div>
+            {{else}}
+        No rooms in database 
+        {{/each}}
+    </div>
+
+        </div>
+        </div>
+
+
+
+
+
+       <!-- <div class="room">
             <img class="img" src="/image/room2.jpeg" alt="room1" >
             <h3>Romantic Cabana with view</h3>
             <p>$234 CAD/night</p>
@@ -34,5 +67,6 @@
             <p>$167 CAD/night</p>
         </div>
     </div>
-</div>
-</div>
+</div>-->
+
+
