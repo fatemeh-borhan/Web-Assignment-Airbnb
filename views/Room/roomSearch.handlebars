@@ -1,7 +1,8 @@
-
- 
- <form method="POST" action="/room/profile/{{this._id}}/?_method=PUT" enctype="multipart/form-data">
+<h3>Ilove you</h3>
  {{#each roomSearch}} 
+
+ <form method="POST" action="/room/profile/{{this._id}}" enctype="multipart/form-data">
+ 
    <img class="img" src="/uploads/{{this.roomImage}}">
        
         <h4>{{this.title}}</h4>
@@ -13,4 +14,4 @@
  No rooms in database 
  {{/each}}
     </form>
-                
+   
