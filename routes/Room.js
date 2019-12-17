@@ -1,19 +1,17 @@
 const express = require('express')
 const router = express.Router();
-
 const Room= require("../models/Room");
 const Book= require("../models/Booking");
 const hasAccess= require("../middleWare/auth");
 const isAdmin= require("../middleWare/userCheck");
 const path = require("path");
-//hanoz madoule nasakhtim vase in bayad besazi bad ino require koni
 
 
-// ye middleware dige ham bayad biad tosh
  router.get("/add",hasAccess,isAdmin,(req,res)=>
 {
     res.render("Room/roomCreate")
 });
+
 router.post("/add",hasAccess,isAdmin,(req,res)=>
 {
      const errors=[];
@@ -79,8 +77,6 @@ router.post("/add",hasAccess,isAdmin,(req,res)=>
        })
     }
     else{
-       // console.log("done")
-
         const room = new Room(newRoom);
        
         room.save()
@@ -103,8 +99,7 @@ router.post("/add",hasAccess,isAdmin,(req,res)=>
                  })
                  .then(()=>{
                     console.log(`File name was updated in the database`)
-                    //console.log(`Room was added to the database`);
-                    //console.log(`${room}`);
+                   
                     res.redirect("/room/list");
                    // res.redirect("/user/login"); 
                  })
